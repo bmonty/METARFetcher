@@ -3,19 +3,27 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E01B1DE9240161C700E65BA6 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1DE8240161C700E65BA6 /* Common.swift */; };
 		E063022623D776DF0026F494 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E063022523D776DF0026F494 /* AppDelegate.swift */; };
 		E063022823D776DF0026F494 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E063022723D776DF0026F494 /* SceneDelegate.swift */; };
 		E063022A23D776DF0026F494 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E063022923D776DF0026F494 /* ContentView.swift */; };
 		E063022C23D776E30026F494 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E063022B23D776E30026F494 /* Assets.xcassets */; };
 		E063022F23D776E30026F494 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E063022E23D776E30026F494 /* Preview Assets.xcassets */; };
 		E063023223D776E30026F494 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E063023023D776E30026F494 /* LaunchScreen.storyboard */; };
+		E063023B23D777150026F494 /* AvWeather in Frameworks */ = {isa = PBXBuildFile; productRef = E063023A23D777150026F494 /* AvWeather */; };
+		E09E43F123DDD0EA003112A9 /* StationOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09E43F023DDD0EA003112A9 /* StationOverview.swift */; };
+		E09E43F323DE08E8003112A9 /* FlightConditionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09E43F223DE08E8003112A9 /* FlightConditionIndicator.swift */; };
+		E09E43F523DF9D7F003112A9 /* WindIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09E43F423DF9D7F003112A9 /* WindIndicator.swift */; };
+		E09E43F723E74826003112A9 /* MetarStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09E43F623E74826003112A9 /* MetarStore.swift */; };
+		E09E43F923E7AAEB003112A9 /* AddStationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09E43F823E7AAEB003112A9 /* AddStationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E01B1DE8240161C700E65BA6 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		E063022223D776DF0026F494 /* METARFetcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = METARFetcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E063022523D776DF0026F494 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E063022723D776DF0026F494 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +32,11 @@
 		E063022E23D776E30026F494 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E063023123D776E30026F494 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E063023323D776E30026F494 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E09E43F023DDD0EA003112A9 /* StationOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationOverview.swift; sourceTree = "<group>"; };
+		E09E43F223DE08E8003112A9 /* FlightConditionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightConditionIndicator.swift; sourceTree = "<group>"; };
+		E09E43F423DF9D7F003112A9 /* WindIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindIndicator.swift; sourceTree = "<group>"; };
+		E09E43F623E74826003112A9 /* MetarStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetarStore.swift; sourceTree = "<group>"; };
+		E09E43F823E7AAEB003112A9 /* AddStationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,12 +44,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E063023B23D777150026F494 /* AvWeather in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E01B1DEA240177F700E65BA6 /* UI Elements */ = {
+			isa = PBXGroup;
+			children = (
+				E09E43F023DDD0EA003112A9 /* StationOverview.swift */,
+				E09E43F223DE08E8003112A9 /* FlightConditionIndicator.swift */,
+				E09E43F423DF9D7F003112A9 /* WindIndicator.swift */,
+			);
+			path = "UI Elements";
+			sourceTree = "<group>";
+		};
+		E01B1DEB2401781400E65BA6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E09E43F623E74826003112A9 /* MetarStore.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E01B1DEC2401782D00E65BA6 /* Dialogs */ = {
+			isa = PBXGroup;
+			children = (
+				E09E43F823E7AAEB003112A9 /* AddStationView.swift */,
+			);
+			path = Dialogs;
+			sourceTree = "<group>";
+		};
 		E063021923D776DF0026F494 = {
 			isa = PBXGroup;
 			children = (
@@ -56,9 +96,13 @@
 		E063022423D776DF0026F494 /* METARFetcher */ = {
 			isa = PBXGroup;
 			children = (
+				E01B1DE8240161C700E65BA6 /* Common.swift */,
 				E063022523D776DF0026F494 /* AppDelegate.swift */,
 				E063022723D776DF0026F494 /* SceneDelegate.swift */,
 				E063022923D776DF0026F494 /* ContentView.swift */,
+				E01B1DEB2401781400E65BA6 /* Model */,
+				E01B1DEC2401782D00E65BA6 /* Dialogs */,
+				E01B1DEA240177F700E65BA6 /* UI Elements */,
 				E063022B23D776E30026F494 /* Assets.xcassets */,
 				E063023023D776E30026F494 /* LaunchScreen.storyboard */,
 				E063023323D776E30026F494 /* Info.plist */,
@@ -91,6 +135,9 @@
 			dependencies = (
 			);
 			name = METARFetcher;
+			packageProductDependencies = (
+				E063023A23D777150026F494 /* AvWeather */,
+			);
 			productName = METARFetcher;
 			productReference = E063022223D776DF0026F494 /* METARFetcher.app */;
 			productType = "com.apple.product-type.application";
@@ -119,6 +166,9 @@
 				Base,
 			);
 			mainGroup = E063021923D776DF0026F494;
+			packageReferences = (
+				E063023923D777150026F494 /* XCRemoteSwiftPackageReference "AvWeather" */,
+			);
 			productRefGroup = E063022323D776DF0026F494 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -147,7 +197,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E063022623D776DF0026F494 /* AppDelegate.swift in Sources */,
+				E09E43F123DDD0EA003112A9 /* StationOverview.swift in Sources */,
 				E063022823D776DF0026F494 /* SceneDelegate.swift in Sources */,
+				E09E43F523DF9D7F003112A9 /* WindIndicator.swift in Sources */,
+				E01B1DE9240161C700E65BA6 /* Common.swift in Sources */,
+				E09E43F323DE08E8003112A9 /* FlightConditionIndicator.swift in Sources */,
+				E09E43F923E7AAEB003112A9 /* AddStationView.swift in Sources */,
+				E09E43F723E74826003112A9 /* MetarStore.swift in Sources */,
 				E063022A23D776DF0026F494 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,6 +398,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E063023923D777150026F494 /* XCRemoteSwiftPackageReference "AvWeather" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bmonty/AvWeather";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E063023A23D777150026F494 /* AvWeather */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E063023923D777150026F494 /* XCRemoteSwiftPackageReference "AvWeather" */;
+			productName = AvWeather;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E063021A23D776DF0026F494 /* Project object */;
 }

@@ -15,6 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        // check if user defaults exists for station IDs, if not create it
+        if let _ = UserDefaults.standard.array(forKey: UserDefaultResourceNames.stationIds.rawValue) {
+            return true
+        } else {
+            // user defaults didn't exist, so create an empty array
+            let empty: [String] = []
+            UserDefaults.standard.set(empty, forKey: UserDefaultResourceNames.stationIds.rawValue)
+        }
+
         return true
     }
 
