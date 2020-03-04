@@ -12,35 +12,59 @@ import AvWeather
 struct FlightConditionIndicator: View {
 
     @State var condition: Metar.FlightCategory
-    private var fillColor: Color {
+    private var fillColor: [Color] {
         switch condition {
         case .vfr:
-            return Color.green
+            return [
+                Color(red: 0 / 255, green: 255 / 255, blue: 0),
+                Color(red: 0 / 255, green: 128 / 255, blue: 0 / 255)
+            ]
         case .mvfr:
-            return Color.blue
+            return [
+                Color(red: 240 / 255, green: 128 / 255, blue: 128 / 255),
+                Color(red: 178 / 255, green: 34 / 255, blue: 34 / 255)
+            ]
         case .ifr:
-            return Color.red
+            return [
+                Color(red: 221 / 255, green: 160 / 255, blue: 221 / 255),
+                Color(red: 148 / 255, green: 0 / 255, blue: 211 / 255)
+            ]
         case .lifr:
-            return Color.purple
+            return [
+                Color(red: 30 / 255, green: 144 / 255, blue: 255 / 255),
+                Color(red: 0 / 255, green: 0 / 255, blue: 255 / 255)
+            ]
         }
     }
 
     var body: some View {
         ZStack {
             Circle()
-                .scale(1.1)
-                .fill(fillColor)
-
-            Circle()
-                .scale(0.9)
-                .fill(RadialGradient(
-                    gradient: Gradient(colors: [fillColor, .white]),
-                    center: .center,
-                    startRadius: CGFloat(integerLiteral: 10),
-                    endRadius: CGFloat(integerLiteral: 17)))
+                .fill(LinearGradient(fillColor))
+                .overlay(
+                    Circle()
+                        .stroke(Color.gray, lineWidth: 4)
+                        .blur(radius: 4)
+                        .offset(x: 2, y: 2)
+                        .mask(
+                            Circle()
+                                .fill(LinearGradient(Color.black, Color.clear))
+                        )
+                )
+                .overlay(
+                    Circle()
+                        .stroke(Color.white, lineWidth: 8)
+                        .blur(radius: 4)
+                        .offset(x: -2, y: -2)
+                        .mask(
+                            Circle()
+                                .fill(LinearGradient(Color.clear, Color.black))
+                        )
+                )
 
             Text(condition.rawValue)
                 .font(Font.system(size: 10, design: .monospaced))
+                .foregroundColor(Color.black)
                 .allowsTightening(true)
         }
         .frame(width: 35, height: 35)
@@ -59,7 +83,7 @@ struct FlightConditionIndicator_Previews: PreviewProvider {
 
             FlightConditionIndicator(condition: .lifr)
         }
-        .previewLayout(.sizeThatFits)
+        .previewLayout(.fixed(width: 80, height: 80))
     }
 }
 #endif

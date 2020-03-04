@@ -29,7 +29,7 @@ struct StationOverview: View {
             VStack {
                 FlightConditionIndicator(condition: metar.flightCategory)
 
-                WindIndicator(windDirection: metar.windDirection, windSpeed: metar.windSpeed, windGust: metar.windGust)
+                //WindIndicator(windDirection: metar.windDirection, windSpeed: metar.windSpeed, windGust: metar.windGust)
             }
 
             VStack(alignment: .leading) {
@@ -47,7 +47,7 @@ struct StationOverview: View {
                             .font(.caption)
                             .onReceive(timer) { _ in
                                 self.relativeTime = self.getRelativeTime(for: self.metar.observationTime)
-                            }
+                        }
                     }
                 }
 
@@ -75,6 +75,12 @@ struct StationOverview: View {
             Spacer()
         }
         .padding(5)
+        .background(
+            RoundedRectangle(cornerRadius: 5)
+                .fill(Color.offWhite)
+                .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
+                .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
+        )
         .onAppear {
             self.relativeTime = self.getRelativeTime(for: self.metar.observationTime)
         }
@@ -145,7 +151,7 @@ struct StationOverview_Previews: PreviewProvider {
                 StationOverview(metar: metar2)
                     .environment(\.colorScheme, .light)
             }
-            .previewLayout(.fixed(width: 400, height: 90))
+            .previewLayout(.fixed(width: 414, height: 100))
         }
     }
 }

@@ -18,11 +18,15 @@ struct ContentView: View {
     /// Track if the Add Station dialog is visible
     @State private var showingAddStation = false
 
+    init() {
+//        UITableView.appearance().backgroundColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 235 / 255, alpha: 1.0)
+        UITableView.appearance().separatorColor = .clear
+    }
+
     var body: some View {
         NavigationView {
-            List(metarStore.stationIds) { station -> StationOverview in
-                let metar = self.metarStore.getCurrentMetar(for: station.stationId)!
-                return StationOverview(metar: metar)
+            List(metarStore.stationIds) { station in
+                StationOverview(metar: self.metarStore.getCurrentMetar(for: station.stationId)!)
             }
             .navigationBarTitle("METAR Watcher")
             .navigationBarItems(trailing:
@@ -34,9 +38,9 @@ struct ContentView: View {
             )
             .sheet(isPresented: $showingAddStation) {
                 AddStationView(stationId: self.$newStationId)
-                .onDisappear() {
-                    //self.addStation()
-                    self.metarStore.objectWillChange.send()
+                    .onDisappear() {
+                        //self.addStation()
+                        self.metarStore.objectWillChange.send()
                 }
             }
             .onAppear() {
