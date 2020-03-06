@@ -48,12 +48,12 @@ struct FlightConditionIndicator: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(LinearGradient(fillColor))
+                .fill(LinearGradient(fillColor[0], fillColor[1]))
                 .overlay(
                     Circle()
-                        .stroke(Color.gray, lineWidth: 4)
-                        .blur(radius: 4)
-                        .offset(x: 2, y: 2)
+                        .stroke(Color.gray, lineWidth: 3)
+                        .blur(radius: 2)
+                        .offset(x: -2, y: -2)
                         .mask(
                             Circle()
                                 .fill(LinearGradient(Color.black, Color.clear))
@@ -61,13 +61,17 @@ struct FlightConditionIndicator: View {
                 )
                 .overlay(
                     Circle()
-                        .stroke(Color.white, lineWidth: 8)
-                        .blur(radius: 4)
-                        .offset(x: -2, y: -2)
+                        .stroke(Color.white, lineWidth: 3)
+                        .blur(radius: 2)
+                        .offset(x: 2, y: 2)
                         .mask(
                             Circle()
                                 .fill(LinearGradient(Color.clear, Color.black))
                         )
+                )
+                .overlay(
+                    Circle()
+                        .stroke(fillColor[1], lineWidth: 2)
                 )
 
             Text(condition.rawValue)
