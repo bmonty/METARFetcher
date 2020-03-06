@@ -15,18 +15,19 @@ struct ContentView: View {
 
     /// Stores the Station ID string when the user adds a new station
     @State private var newStationId = ""
+
     /// Track if the Add Station dialog is visible
     @State private var showingAddStation = false
 
     init() {
-//        UITableView.appearance().backgroundColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 235 / 255, alpha: 1.0)
+        UITableView.appearance().backgroundColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 235 / 255, alpha: 1.0)
         UITableView.appearance().separatorColor = .clear
     }
 
     var body: some View {
         NavigationView {
-            List(metarStore.stationIds) { station in
-                StationOverview(metar: self.metarStore.getCurrentMetar(for: station.stationId)!)
+            List(metarStore.metarStoreData.stationList, id: \.self) { station in
+                StationOverview(metar: self.metarStore.getCurrentMetar(for: station)!)
             }
             .navigationBarTitle("METAR Watcher")
             .navigationBarItems(trailing:

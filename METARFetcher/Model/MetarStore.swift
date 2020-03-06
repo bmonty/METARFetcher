@@ -15,29 +15,33 @@ public enum MetarStoreError: Error {
     case stationIdDoesNotExist(message: String)
 }
 
-/// Stores station IDs with a `UUID` so they can be uniquely identified in SwiftUI elements.
-struct StationList: Identifiable {
-    /// A unique ID for this station ID.
-    let id = UUID()
-    /// The station ID.
-    let stationId: String
+/// Stores METAR data and metadata.
+struct MetarStoreData: Codable {
+    var stationList: [String]
+    var stationData: [String : StationData]
 }
 
-/// Stores METAR data and metadata.
-struct MetarStoreData {
-    /// Array of `Metar` for the station.  The first element of the array is the most recent METAR.
-    var metars: [Metar]
+/// Stores station IDs with a `UUID` so they can be uniquely identified in SwiftUI elements.
+struct StationData: Codable {
+    enum StationLoadingState: Int, Codable {
+        case loading, loaded, failed
+    }
+
+    /// The station ID.
+    let stationId: String
+    /// Loading state for this station's data.
+    var loadingState: StationLoadingState = .loading
     /// `Date` for the time `.metars` was last updated.
     var lastUpdated: Date
+    /// All METAR data for this station
+    var metarData: [Metar]
 }
 
 /// Model for the app.  Stores and updates all METAR data.
 final class MetarStore: ObservableObject {
 
-    /// List of station IDs the model is storing data for.
-    @Published var stationIds: [StationList] = []
-    /// Dictionary storing actual METAR data for each station.
-    private var metarStore: [String: MetarStoreData] = [:]
+    /// Struct to store all METAR information.
+    @Published var metarStoreData: MetarStoreData = MetarStoreData(stationList: [], stationData: [:])
     /// `Timer` used to trigger a periodic update of the stored METAR data.
     private var timer: Timer = Timer()
 
@@ -66,10 +70,10 @@ final class MetarStore: ObservableObject {
     ///     - date: the date to use as the last updated time, defaults to the current date and time
     init(for stations: [String], with data: [[Metar]], at date: Date = Date()) {
         for (index, station) in stations.enumerated() {
-            let mstore = MetarStoreData(metars: data[index], lastUpdated: date)
-            metarStore.updateValue(mstore, forKey: station)
+            let stationData = StationData(stationId: station, lastUpdated: date, metarData: data[index])
 
-            stationIds.append(StationList(stationId: station))
+            metarStoreData.stationList.append(station)
+            metarStoreData.stationData.updateValue(stationData, forKey: station)
         }
     }
 
@@ -84,11 +88,7 @@ final class MetarStore: ObservableObject {
         }
 
         // load data for each station ID
-        stationIds.forEach { [weak self] station in
-            guard let self = self else {
-                fatalError("Model class doesn't exist.")
-            }
-
+        stationIds.forEach { station in
             self.getStationData(for: station)
         }
     }
@@ -96,7 +96,7 @@ final class MetarStore: ObservableObject {
     /// Update user's station ID list in User Data.
     private func updateUserData() {
         // update user defaults with the new list of station IDs
-        UserDefaults.standard.set(self.stationIds, forKey: UserDefaultResourceNames.stationIds.rawValue)
+        UserDefaults.standard.set(metarStoreData.stationList, forKey: UserDefaultResourceNames.stationIds.rawValue)
     }
 
     /// Make a web request to get METAR data for the specified station ID.
@@ -123,25 +123,22 @@ final class MetarStore: ObservableObject {
     /// - Parameters:
     ///     - stationId: the station ID to store/update
     ///     - metars: array of `Metar` to store in the model
-    ///     - index: optional location for inserting the station ID in the `stationIds` array
+    ///     - index: optional location for inserting the station ID in the `stationList` array
     private func storeMetar(for stationId: String, withData metars: [Metar], at index: Int? = nil) {
-        // store/update METAR data in the model
-        let metar = MetarStoreData(metars: metars,
-                                   lastUpdated: Date())
-        metarStore.updateValue(metar, forKey: stationId)
+        let stationData = StationData(stationId: stationId, lastUpdated: Date(), metarData: metars)
 
-        // update stationIds array, if required, and update view
-        if !stationIds.contains(where: { $0.stationId == stationId }) {
-            // insert the new station ID and trigger a UI update
-            let insertIndex = index ?? stationIds.endIndex
-            DispatchQueue.main.async {
-                self.stationIds.insert(StationList(stationId: stationId), at: insertIndex)
+        // switch to main thread, because this will trigger a UI update
+        DispatchQueue.main.async {
+            if !self.metarStoreData.stationList.contains(stationId) {
+                if index != nil {
+                    self.metarStoreData.stationList.insert(stationId, at: index!)
+                } else {
+                    self.metarStoreData.stationList.append(stationId)
+                }
             }
-        } else {
-            // trigger a UI update even though the stationIds array didn't change
-            DispatchQueue.main.async {
-                self.objectWillChange.send()
-            }
+
+            self.metarStoreData.stationData.updateValue(stationData, forKey: stationId)
+            self.metarStoreData.stationData[stationId]!.loadingState = .loaded
         }
     }
 
@@ -150,13 +147,13 @@ final class MetarStore: ObservableObject {
         // a station gets an update if it's lastUpdated is more than 30 mins old
         let updateDate = Date().addingTimeInterval(-30.0 * 60.0)
 
-        stationIds.forEach { station in
-            guard let lastUpdated = self.metarStore[station.stationId]?.lastUpdated else {
-                fatalError("There is a stationId that is not in the metarStore.")
+        metarStoreData.stationList.forEach { station in
+            guard let lastUpdated = metarStoreData.stationData[station]?.lastUpdated else {
+                fatalError("\(station) is in the stationList but not in stationData.")
             }
 
             if lastUpdated < updateDate {
-                self.getStationData(for: station.stationId)
+                self.getStationData(for: station)
             }
         }
     }
@@ -168,11 +165,12 @@ final class MetarStore: ObservableObject {
     ///
     /// - Returns: the most recent `Metar` for the station or `nil` if the station doesn't exist
     public func getCurrentMetar(for station: String) -> Metar? {
-        if let metarData = metarStore[station] {
-            return metarData.metars.first!
-        } else {
-            return nil
+        if let stationData = metarStoreData.stationData[station] {
+            return stationData.metarData.first
         }
+
+        // requested a station ID that's not the data store
+        return nil
     }
 
     /// Add a new Station ID for the model to track.
