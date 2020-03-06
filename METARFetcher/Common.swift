@@ -23,12 +23,23 @@ extension Color {
     static let lightEnd = Color(red: 30 / 255, green: 80 / 255, blue: 120 / 255)
 }
 
-/// Helper for making `LinearGradients`
 extension LinearGradient {
+    /// Helper for making `LinearGradient`s.
+    ///
+    /// Gradient is from `.topLeading` to `.bottomTrailing`.
+    ///
+    /// - Parameters:
+    ///     - colors: variadic argument of `Color` for the gradient
     init(_ colors: Color...) {
         self.init(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)
     }
 
+    /// Helper for making `LinearGradient`s.
+    ///
+    /// Gradient is from `.topLeading` to `.bottomTrailing`.
+    ///
+    /// - Parameters:
+    ///     - colors: array of `Color` for the gradient
     init(_ colors: [Color]) {
         self.init(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)
     }

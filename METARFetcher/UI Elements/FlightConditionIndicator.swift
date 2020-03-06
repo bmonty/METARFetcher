@@ -9,9 +9,13 @@
 import SwiftUI
 import AvWeather
 
+/// View to display a flight condition indicator in the `StationOverview`.
 struct FlightConditionIndicator: View {
 
+    /// The flight category to display (VFR, MVFR, IFR, LIFR).
     @State var condition: Metar.FlightCategory
+
+    /// Provides appropriate colors for each flight condition.
     private var fillColor: [Color] {
         switch condition {
         case .vfr:
