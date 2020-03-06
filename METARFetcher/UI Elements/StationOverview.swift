@@ -9,9 +9,14 @@
 import SwiftUI
 import AvWeather
 
+
+/// View to display METAR information for a station.
 struct StationOverview: View {
 
+    /// METAR data for this station.
     @State var metar: Metar
+
+    /// Relative time between now and when the METAR was published (i.e. "30 min. ago").
     @State private var relativeTime: String = ""
 
     static let dateFormatter: DateFormatter = {
@@ -21,11 +26,12 @@ struct StationOverview: View {
         return formatter
     }()
 
-    // timer used to update the relative time ("34 mins ago") display
+    /// Timer used to update the relative time display.
     private let timer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
 
     var body: some View {
         HStack {
+            
             VStack {
                 FlightConditionIndicator(condition: metar.flightCategory)
 
@@ -52,11 +58,19 @@ struct StationOverview: View {
                 }
 
                 HStack {
+                    Text("sky condition here")
+                }
+
+                HStack {
                     Text("Wind: \(metar.windDirection) @ \(metar.windSpeed)\(metar.windGust > 0 ? ", gust \(metar.windGust)" : "")")
 
                     Spacer()
 
-                    Text("Vis: \(metar.visibility, specifier: "%.0f") SM")
+                    if metar.visibility > 1 {
+                        Text("Vis: \(metar.visibility, specifier: "%.0f") SM")
+                    } else {
+                        Text("Vis: \(getRationalVisibility(metar.visibility)) SM")
+                    }
                 }
 
                 HStack {
@@ -79,7 +93,7 @@ struct StationOverview: View {
             RoundedRectangle(cornerRadius: 5)
                 .fill(Color.offWhite)
                 .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
-                .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
+                .shadow(color: Color.white.opacity(0.7), radius: 10, x: -10, y: -10)
         )
         .onAppear {
             self.relativeTime = self.getRelativeTime(for: self.metar.observationTime)
@@ -91,6 +105,11 @@ struct StationOverview: View {
         formatter.unitsStyle = .short
 
         return formatter.localizedString(for: metarTime, relativeTo: Date())
+    }
+
+    private func getRationalVisibility(_ value: Double) -> String {
+        let rationalValue = rationalApproximationOf(x0: value)
+        return "\(rationalValue.num)/\(rationalValue.den)"
     }
 
 }
@@ -105,7 +124,7 @@ struct StationOverview_Previews: PreviewProvider {
     struct PreviewWrapper: View {
         var metar1: Metar {
             var metar = Metar()
-            metar.rawText = "KFME 261348Z AUTO 25005KT 10SM OVC080 01/01 A2994 RMK AO1"
+            metar.rawText = "KFME 261348Z AUTO 25005KT 10SM CLR 01/01 A2994 RMK AO1"
             metar.stationId = "KFME"
             metar.observationTime = Date().addingTimeInterval(-63 * 60)
             metar.latitude = 39.08
@@ -120,12 +139,16 @@ struct StationOverview_Previews: PreviewProvider {
             metar.flightCategory = .vfr
             metar.metarType = .metar
             metar.stationElevation = 46.0
+
+            //var skyCondition = Metar.SkyCondition(skyCover: .clr, base: 0)
+            //metar.skyCondition = [skyCondition]
+
             return metar
         }
 
         var metar2: Metar {
             var metar = Metar()
-            metar.rawText = "KFME 261348Z AUTO 25005KT 10SM OVC080 01/01 A2994 RMK AO1"
+            metar.rawText = "KBOS 261348Z AUTO 25005KT 1/4SM OVC080 01/01 A2994 RMK AO1"
             metar.stationId = "KBOS"
             metar.observationTime = Date().addingTimeInterval(-20 * 60)
             metar.latitude = 39.08
@@ -135,23 +158,27 @@ struct StationOverview_Previews: PreviewProvider {
             metar.windDirection = 100
             metar.windSpeed = 15
             metar.windGust = 20
-            metar.visibility = 10.0
+            metar.visibility = 0.25
             metar.altimeter = 29.940945
             metar.flightCategory = .ifr
             metar.metarType = .metar
             metar.stationElevation = 150.0
+
+            //var skyCondition = Metar.SkyCondition(skyCover: .ovc, base: 800)
+            //metar.skyCondition = [skyCondition]
+
             return metar
         }
 
         var body: some View {
             Group {
                 StationOverview(metar: metar1)
-                    .environment(\.colorScheme, .light)
+                    //.environment(\.colorScheme, .light)
 
                 StationOverview(metar: metar2)
-                    .environment(\.colorScheme, .light)
+                    //.environment(\.colorScheme, .light)
             }
-            .previewLayout(.fixed(width: 414, height: 100))
+            .previewLayout(.fixed(width: 414, height: 150))
         }
     }
 }
