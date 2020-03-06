@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E01B1DE9240161C700E65BA6 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1DE8240161C700E65BA6 /* Common.swift */; };
+		E05A6E56241268F3008CB485 /* RawMetarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A6E55241268F3008CB485 /* RawMetarView.swift */; };
 		E063022623D776DF0026F494 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E063022523D776DF0026F494 /* AppDelegate.swift */; };
 		E063022823D776DF0026F494 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E063022723D776DF0026F494 /* SceneDelegate.swift */; };
 		E063022A23D776DF0026F494 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E063022923D776DF0026F494 /* ContentView.swift */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		E01B1DE8240161C700E65BA6 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		E05A6E55241268F3008CB485 /* RawMetarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawMetarView.swift; sourceTree = "<group>"; };
 		E063022223D776DF0026F494 /* METARFetcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = METARFetcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E063022523D776DF0026F494 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E063022723D776DF0026F494 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				E09E43F023DDD0EA003112A9 /* StationOverview.swift */,
+				E05A6E55241268F3008CB485 /* RawMetarView.swift */,
 				E09E43F223DE08E8003112A9 /* FlightConditionIndicator.swift */,
 				E09E43F423DF9D7F003112A9 /* WindIndicator.swift */,
 			);
@@ -205,6 +208,7 @@
 				E09E43F923E7AAEB003112A9 /* AddStationView.swift in Sources */,
 				E09E43F723E74826003112A9 /* MetarStore.swift in Sources */,
 				E063022A23D776DF0026F494 /* ContentView.swift in Sources */,
+				E05A6E56241268F3008CB485 /* RawMetarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

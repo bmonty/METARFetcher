@@ -27,12 +27,18 @@ struct StationData: Codable {
         case loading, loaded, failed
     }
 
+    enum StationDisplayState: Int, Codable {
+        case overview, rawmetar
+    }
+
     /// The station ID.
     let stationId: String
     /// Loading state for this station's data.
     var loadingState: StationLoadingState = .loading
     /// `Date` for the time `.metars` was last updated.
     var lastUpdated: Date
+    /// Display state, `true` for overview and `false` for raw METAR.
+    var displayRawMetar: Bool = false
     /// All METAR data for this station
     var metarData: [Metar]
 }

@@ -10,24 +10,42 @@ import SwiftUI
 import AvWeather
 
 struct ContentView: View {
-    /// Model holding all METAR data
+    /// Model holding all METAR data.
     @EnvironmentObject var metarStore: MetarStore
 
-    /// Stores the Station ID string when the user adds a new station
+    /// Stores the Station ID string when the user adds a new station.
     @State private var newStationId = ""
 
-    /// Track if the Add Station dialog is visible
-    @State private var showingAddStation = false
+    /// Track if the raw METAR alert is visible.
+    @State private var showRawMetar: Bool = false
+
+    /// Track if the Add Station dialog is visible.
+    @State private var showingAddStation: Bool = false
 
     init() {
-        UITableView.appearance().backgroundColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 235 / 255, alpha: 1.0)
         UITableView.appearance().separatorColor = .clear
     }
 
     var body: some View {
         NavigationView {
             List(metarStore.metarStoreData.stationList, id: \.self) { station in
-                StationOverview(metar: self.metarStore.getCurrentMetar(for: station)!)
+                ZStack {
+                    RawMetarView(metar: self.metarStore.getCurrentMetar(for: station)!)
+                    .rotation3DEffect(.degrees(self.metarStore.metarStoreData.stationData[station]!.displayRawMetar ? 0.0 : 180.0), axis: (x: 1.0, y: 0.0, z: 0.0))
+                    .zIndex(self.metarStore.metarStoreData.stationData[station]!.displayRawMetar ? 1 : 0)
+                    .animation(.default)
+                    .onLongPressGesture {
+                        self.metarStore.metarStoreData.stationData[station]!.displayRawMetar.toggle()
+                    }
+
+                    StationOverview(metar: self.metarStore.getCurrentMetar(for: station)!)
+                    .rotation3DEffect(.degrees(self.metarStore.metarStoreData.stationData[station]!.displayRawMetar ? 180.0 : 0.0), axis: (x: -1.0, y: 0.0, z: 0.0))
+                    .zIndex(self.metarStore.metarStoreData.stationData[station]!.displayRawMetar ? 0 : 1)
+                    .animation(.default)
+                    .onLongPressGesture {
+                            self.metarStore.metarStoreData.stationData[station]!.displayRawMetar.toggle()
+                    }
+                }
             }
             .navigationBarTitle("METAR Watcher")
             .navigationBarItems(trailing:
@@ -43,9 +61,6 @@ struct ContentView: View {
                         //self.addStation()
                         self.metarStore.objectWillChange.send()
                 }
-            }
-            .onAppear() {
-                self.metarStore.objectWillChange.send()
             }
         }
     }
