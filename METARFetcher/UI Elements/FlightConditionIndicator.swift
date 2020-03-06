@@ -21,22 +21,26 @@ struct FlightConditionIndicator: View {
         case .vfr:
             return [
                 Color(red: 0 / 255, green: 255 / 255, blue: 0),
-                Color(red: 0 / 255, green: 128 / 255, blue: 0 / 255)
+                Color(red: 0 / 255, green: 128 / 255, blue: 0 / 255),
+                Color.black
             ]
         case .mvfr:
             return [
                 Color(red: 240 / 255, green: 128 / 255, blue: 128 / 255),
-                Color(red: 178 / 255, green: 34 / 255, blue: 34 / 255)
+                Color(red: 178 / 255, green: 34 / 255, blue: 34 / 255),
+                Color.black
             ]
         case .ifr:
             return [
                 Color(red: 221 / 255, green: 160 / 255, blue: 221 / 255),
-                Color(red: 148 / 255, green: 0 / 255, blue: 211 / 255)
+                Color(red: 148 / 255, green: 0 / 255, blue: 211 / 255),
+                Color.black
             ]
         case .lifr:
             return [
                 Color(red: 30 / 255, green: 144 / 255, blue: 255 / 255),
-                Color(red: 0 / 255, green: 0 / 255, blue: 255 / 255)
+                Color(red: 0 / 255, green: 0 / 255, blue: 255 / 255),
+                Color.yellow
             ]
         }
     }
@@ -68,7 +72,8 @@ struct FlightConditionIndicator: View {
 
             Text(condition.rawValue)
                 .font(Font.system(size: 10, design: .monospaced))
-                .foregroundColor(Color.black)
+                .bold()
+                .foregroundColor(fillColor[2])
                 .allowsTightening(true)
         }
         .frame(width: 35, height: 35)

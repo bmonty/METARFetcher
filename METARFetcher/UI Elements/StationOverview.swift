@@ -41,7 +41,11 @@ struct StationOverview: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(metar.stationId)")
+                        .padding(4)
                         .font(.headline)
+                        .foregroundColor(Color.white)
+//                        .background(LinearGradient(Color.darkStart, Color.darkEnd))
+                        .background(Color.gray)
 
                     Spacer()
 
@@ -51,6 +55,7 @@ struct StationOverview: View {
 
                         Text("\(relativeTime)")
                             .font(.caption)
+                            .italic()
                             .onReceive(timer) { _ in
                                 self.relativeTime = self.getRelativeTime(for: self.metar.observationTime)
                         }
@@ -58,31 +63,31 @@ struct StationOverview: View {
                 }
 
                 HStack {
-                    Text("sky condition here")
+                    Text("Wind: ").bold() + Text("\(metar.windDirection)° @ \(metar.windSpeed)\(metar.windGust > 0 ? "kt, gust \(metar.windGust)kt" : "kt")")
                 }
 
                 HStack {
-                    Text("Wind: \(metar.windDirection) @ \(metar.windSpeed)\(metar.windGust > 0 ? ", gust \(metar.windGust)" : "")")
+                    Text("sky condition here").bold().italic()
+                }
 
-                    Spacer()
-
+                HStack {
                     if metar.visibility > 1 {
-                        Text("Vis: \(metar.visibility, specifier: "%.0f") SM")
+                        Text("Visibility: ").bold() + Text("\(metar.visibility, specifier: "%.0f") SM")
                     } else {
-                        Text("Vis: \(getRationalVisibility(metar.visibility)) SM")
+                        Text("Visibility: ").bold() + Text("\(getRationalVisibility(metar.visibility)) SM")
                     }
                 }
 
                 HStack {
-                    Text("Temp: \(metar.temp, specifier: "%.0f")°C")
+                    Text("Temp: ").bold() + Text("\(metar.temp, specifier: "%.0f")°C")
 
                     Spacer()
 
-                    Text("DP: \(metar.dewpoint, specifier: "%.0f")°C")
+                    Text("Dew Point: ").bold() + Text("\(metar.dewpoint, specifier: "%.0f")°C")
 
                     Spacer()
 
-                    Text("Alt: \(metar.altimeter, specifier: "%.2f")")
+                    Text("Alt: ").bold() + Text("\(metar.altimeter, specifier: "%.2f")")
                 }
             }
 
@@ -148,7 +153,7 @@ struct StationOverview_Previews: PreviewProvider {
 
         var metar2: Metar {
             var metar = Metar()
-            metar.rawText = "KBOS 261348Z AUTO 25005KT 1/4SM OVC080 01/01 A2994 RMK AO1"
+            metar.rawText = "KBOS 261348Z AUTO 25005KT 1/4SM OVC080 01/01 A3042 RMK AO1"
             metar.stationId = "KBOS"
             metar.observationTime = Date().addingTimeInterval(-20 * 60)
             metar.latitude = 39.08
@@ -159,7 +164,7 @@ struct StationOverview_Previews: PreviewProvider {
             metar.windSpeed = 15
             metar.windGust = 20
             metar.visibility = 0.25
-            metar.altimeter = 29.940945
+            metar.altimeter = 30.4233456
             metar.flightCategory = .ifr
             metar.metarType = .metar
             metar.stationElevation = 150.0
